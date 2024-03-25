@@ -1,8 +1,8 @@
-package com.uni.project.currency.controller;
+package com.uni.project.controller;
 
-import com.uni.project.currency.CurrencyClient;
-import com.uni.project.currency.dto.CurrencyDto;
-import com.uni.project.currency.dto.CurrencyTo;
+import com.uni.project.client.CurrencyClient;
+import com.uni.project.dto.CurrencyDto;
+import com.uni.project.dto.CurrencyTo;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

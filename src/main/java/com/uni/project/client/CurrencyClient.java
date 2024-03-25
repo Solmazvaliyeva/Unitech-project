@@ -1,6 +1,6 @@
-package com.uni.project.currency;
+package com.uni.project.client;
 
-import com.uni.project.currency.dto.CurrencyDto;
+import com.uni.project.dto.CurrencyDto;
 import feign.Headers;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

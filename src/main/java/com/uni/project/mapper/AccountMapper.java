@@ -16,6 +16,7 @@ public interface AccountMapper {
     @Mapping(target = "accountOpenDate" ,source = "accountOpenDate")
     @Mapping(target = "creditAmount" ,source = "creditAmount")
     @Mapping(target = "debitAmount" ,source = "debitAmount")
+    @Mapping(target = "accountType" ,source = "accountType")
 
     AccountDto  accountEntityToDto(UserAccounts userAccounts);
 

@@ -1,4 +1,6 @@
-package com.uni.project.dto;
+package com.uni.project.models;
+
+import com.uni.project.models.AccountType;
 
 public class RequestCreateAccount {
 

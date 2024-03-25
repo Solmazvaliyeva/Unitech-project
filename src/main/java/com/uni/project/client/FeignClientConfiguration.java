@@ -1,4 +1,4 @@
-package com.uni.project.currency;
+package com.uni.project.client;
 
 import feign.auth.BasicAuthRequestInterceptor;
 import org.springframework.context.annotation.Bean;

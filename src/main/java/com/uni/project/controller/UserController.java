@@ -1,8 +1,8 @@
 package com.uni.project.controller;
 
 import com.uni.project.dto.AccountDto;
-import com.uni.project.dto.RequestCreateAccount;
-import com.uni.project.dto.RequestMakeTransfer;
+import com.uni.project.models.RequestCreateAccount;
+import com.uni.project.models.RequestMakeTransfer;
 import com.uni.project.service.UserAccountsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

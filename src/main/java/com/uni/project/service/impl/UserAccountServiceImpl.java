@@ -1,14 +1,14 @@
 package com.uni.project.service.impl;
 
-import com.uni.project.auth.exception.NoUserFoundException;
+import com.uni.project.exception.NoUserFoundException;
 import com.uni.project.dao.*;
 import com.uni.project.dao.repo.CurrencyRepository;
 import com.uni.project.dao.repo.UserAccountRepository;
 import com.uni.project.dao.repo.UserRepository;
 import com.uni.project.dto.AccountDto;
-import com.uni.project.dto.BalanceAccount;
-import com.uni.project.dto.RequestCreateAccount;
-import com.uni.project.dto.RequestMakeTransfer;
+import com.uni.project.models.BalanceAccount;
+import com.uni.project.models.RequestCreateAccount;
+import com.uni.project.models.RequestMakeTransfer;
 import com.uni.project.mapper.AccountMapper;
 import com.uni.project.service.UserAccountsService;
 import org.springframework.stereotype.Service;
@@ -54,9 +54,14 @@ public class UserAccountServiceImpl implements UserAccountsService {
 
     @Override
     public String createNewAccount(RequestCreateAccount requestBody) {
+        Integer accountSub;
         Calendar today = Calendar.getInstance();
         UserEntity userEntity = repository.findById(requestBody.getUserId()).orElseThrow(() -> new NoUserFoundException("Entered User id not found"));
-        Integer accountSub = userAccountRepository.getMaxAccountNumber(userEntity.getId()) + 1;
+        try{
+         accountSub = userAccountRepository.getMaxAccountNumber(userEntity.getId()) + 1;}
+        catch (RuntimeException exception){
+            accountSub = 1 ;
+        }
         var userAccount = UserAccounts.builder()
                 .user(userEntity)
                 .accountSub(accountSub)
@@ -75,38 +80,57 @@ public class UserAccountServiceImpl implements UserAccountsService {
 
     @Override
     public String makeTransfer(RequestMakeTransfer transferBody) {
-        String message = "";
+
         BalanceAccount senderBalanceAccount = getAccount(transferBody.getSenderIban());
-        Double amount = userAccountRepository.getBalance(senderBalanceAccount.getUserId(), senderBalanceAccount.getAccountSub());
+        //Double amount = userAccountRepository.getBalance(senderBalanceAccount.getUserId(), senderBalanceAccount.getAccountSub());
         BalanceAccount receiverBalanceAccount = getAccount(transferBody.getReceiverIban());
 
-        if (transferBody.getAmount() > amount) {
+        UserAccounts senderAccount = userAccountRepository.getAccount(senderBalanceAccount.getUserId(),
+                senderBalanceAccount.getAccountSub()).orElseThrow(()-> new RuntimeException("Sender account doesn't exist"));
+
+
+        UserAccounts receiverAccount = userAccountRepository.getAccount(receiverBalanceAccount.getUserId() ,
+                receiverBalanceAccount.getAccountSub()).orElseThrow(()-> new RuntimeException("Receiver account doesn't exist"));
+
+        if (transferBody.getAmount() > (senderAccount.getCreditAmount() - senderAccount.getDebitAmount())) {
             throw new RuntimeException("Don't have enough money in your  balance account");
         } else if (receiverBalanceAccount.getUserId() == senderBalanceAccount.getUserId() &
                 receiverBalanceAccount.getAccountSub() == senderBalanceAccount.getAccountSub()) {
             throw new RuntimeException("You can't transfer to same account");
 
-        } else if (!repository.findById(receiverBalanceAccount.getUserId()).isPresent()
-                || !userAccountRepository.getAccount(receiverBalanceAccount.getUserId(), receiverBalanceAccount.getAccountSub()).isPresent()) {
+        } else if (receiverAccount.getId() != receiverBalanceAccount.getUserId()&&receiverAccount.getAccountSub() != receiverBalanceAccount.getAccountSub()) {
             throw new RuntimeException("Receiver account doesn't exist");
-
-        } else if (!userAccountRepository.isActive(receiverBalanceAccount.getUserId(), receiverBalanceAccount.getAccountSub())
-                .isPresent()) {
+        } else if (!userAccountRepository.getAccount(receiverBalanceAccount.getUserId(),
+                receiverBalanceAccount.getAccountSub()).get().getIsActive().equals('Y')) {
             throw new RuntimeException("Receiver account is not active");
         }
 
-        UserAccounts receiverAccount = userAccountRepository.getAccount(receiverBalanceAccount.getUserId() ,
-                receiverBalanceAccount.getAccountSub()).orElseThrow();
 
         receiverAccount.setCreditAmount(transferBody.getAmount());
         userAccountRepository.save(receiverAccount);
 
-        UserAccounts senderAccount = userAccountRepository.getAccount(senderBalanceAccount.getUserId(),
-                senderBalanceAccount.getAccountSub()).orElseThrow();
+
         senderAccount.setDebitAmount(transferBody.getAmount());
+
         userAccountRepository.save(senderAccount);
 
         return "successful transfer";
+    }
+
+    @Override
+    public List<UserAccounts> getAllActiveAccounts(Long userId) {
+        var userEntity = repository.findById(userId).orElseThrow(() -> new NoUserFoundException("Entered User id not found"));
+
+        try {
+            List<UserAccounts> accounts = userAccountRepository.listUserAccounts(userEntity.getId())
+                    .stream()
+                    .filter(it -> it.getIsActive().equals('Y'))
+                    .collect(Collectors.toList());
+            return accounts;
+        } catch (NullPointerException exception) {
+            throw new NoUserFoundException("There is not any active account");
+        }
+
     }
 
     public String generateIban(Long userId, Integer accountSub) {
@@ -126,7 +150,7 @@ public class UserAccountServiceImpl implements UserAccountsService {
         return "AZ01UBAZ001" + id + sub;
     }
 
-    private BalanceAccount getAccount(String iban) {
+    public BalanceAccount getAccount(String iban) {
 
         String customerNo = iban.substring(12, 17);
         String accountSub = iban.substring(17, 20);

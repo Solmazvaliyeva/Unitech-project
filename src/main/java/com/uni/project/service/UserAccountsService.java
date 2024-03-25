@@ -2,8 +2,8 @@ package com.uni.project.service;
 
 import com.uni.project.dao.UserAccounts;
 import com.uni.project.dto.AccountDto;
-import com.uni.project.dto.RequestCreateAccount;
-import com.uni.project.dto.RequestMakeTransfer;
+import com.uni.project.models.RequestCreateAccount;
+import com.uni.project.models.RequestMakeTransfer;
 
 import java.util.List;
 
@@ -16,6 +16,8 @@ public interface UserAccountsService {
     String createNewAccount(RequestCreateAccount requestBody);
 
     String makeTransfer(RequestMakeTransfer transferBody);
+
+    List<UserAccounts> getAllActiveAccounts(Long userId);
 
 
 }

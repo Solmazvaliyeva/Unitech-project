@@ -1,4 +1,4 @@
-package com.uni.project.auth.config;
+package com.uni.project.security;
 
 import com.uni.project.dao.repo.UserRepository;
 import org.springframework.context.annotation.Bean;

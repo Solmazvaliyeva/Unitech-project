@@ -1,9 +1,13 @@
 package com.uni.project.dto;
 
+import com.uni.project.models.AccountType;
 import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import lombok.Builder;
 
 import java.util.Date;
-
+@Builder
 public class AccountDto {
     private Integer accountSub;
     private Date accountOpenDate;
@@ -13,6 +17,11 @@ public class AccountDto {
 
 
     private Character isActive;
+
+    @Enumerated(EnumType.STRING)
+    private AccountType accountType;
+
+
 
     public Integer getAccountSub() {
         return accountSub;
@@ -54,4 +63,14 @@ public class AccountDto {
     public void setDebitAmount(Double debitAmount) {
         this.debitAmount = debitAmount;
     }
+
+    public AccountType getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
+    }
+
+
 }

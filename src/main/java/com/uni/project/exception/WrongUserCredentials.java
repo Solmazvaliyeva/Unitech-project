@@ -1,4 +1,4 @@
-package com.uni.project.auth.exception;
+package com.uni.project.exception;
 
 public class WrongUserCredentials extends RuntimeException{
     public WrongUserCredentials(String message) {

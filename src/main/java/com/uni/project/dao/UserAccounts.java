@@ -1,6 +1,6 @@
 package com.uni.project.dao;
 
-import com.uni.project.dto.AccountType;
+import com.uni.project.models.AccountType;
 import jakarta.persistence.*;
 import lombok.Builder;
 
@@ -33,6 +33,9 @@ public class UserAccounts {
 
     @Column(name = "active")
     private Character isActive;
+
+
+
 
     @ManyToOne(cascade ={CascadeType.DETACH ,CascadeType.PERSIST ,CascadeType.MERGE ,
             CascadeType.REFRESH})
@@ -131,4 +134,6 @@ public class UserAccounts {
     public void setId(Long id) {
         this.id = id;
     }
+
+
 }

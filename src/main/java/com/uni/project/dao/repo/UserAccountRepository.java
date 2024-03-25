@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -21,12 +22,10 @@ public interface UserAccountRepository extends JpaRepository<UserAccounts,Long> 
     Double getBalance(@Param("userId") Long userId ,@Param("accountSub") Integer accountSub);
 
 
-    @Query("select a from UserAccounts a where a.user.id = :userId and a.accountSub =:accountSub and a.isActive ='Y'")
-    Optional<UserAccounts> isActive(@Param("userId") Long userId , @Param("accountSub") Integer accountSub);
 
     @Query("select a from UserAccounts a where a.user.id = :userId and a.accountSub =:accountSub")
     Optional<UserAccounts> getAccount(@Param("userId") Long userId , @Param("accountSub") Integer accountSub);
-
-
+    @Query("select a from UserAccounts a where a.user.id = :userId")
+    List<UserAccounts> listUserAccounts(@Param("userId") Long userId);
 
 }

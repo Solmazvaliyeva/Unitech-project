@@ -1,4 +1,4 @@
-package com.uni.project.dto;
+package com.uni.project.models;
 
 public class BalanceAccount {
     private Long userId;

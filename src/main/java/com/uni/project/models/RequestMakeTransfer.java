@@ -1,4 +1,4 @@
-package com.uni.project.dto;
+package com.uni.project.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;

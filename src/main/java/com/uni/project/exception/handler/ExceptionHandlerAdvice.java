@@ -1,8 +1,8 @@
 package com.uni.project.exception.handler;
 
-import com.uni.project.auth.exception.NoUserFoundException;
-import com.uni.project.auth.exception.UserExistException;
-import com.uni.project.auth.exception.WrongUserCredentials;
+import com.uni.project.exception.NoUserFoundException;
+import com.uni.project.exception.UserExistException;
+import com.uni.project.exception.WrongUserCredentials;
 import com.uni.project.dto.ExceptionHandlerDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;

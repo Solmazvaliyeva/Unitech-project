@@ -1,4 +1,4 @@
-package com.uni.project.auth.config;
+package com.uni.project.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

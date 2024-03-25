@@ -1,4 +1,4 @@
-package com.uni.project.currency.dto;
+package com.uni.project.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -36,7 +36,7 @@ public class UserRegisterServiceTest {
     private UserRegisterService service;
 
     @Test
-    public void createUser_whenValidPin() {
+    public void createUser_WhenValidPin() {
 
         RegisterRequest request = RegisterRequest.builder().pin("7bslc70")
                 .password("234").build();
@@ -56,7 +56,7 @@ public class UserRegisterServiceTest {
     }
 
     @Test
-    public void returnExceptionMessage_whenExistedPin() {
+    public void ReturnExceptionMessage_WhenExistedPin() {
         UserEntity user = UserEntity.builder().pin("7bslc70")
                 .password("234").build();
         RegisterRequest request = RegisterRequest.builder().pin("7bslc70")
@@ -72,7 +72,7 @@ public class UserRegisterServiceTest {
 
 
     @Test
-    public void checkUser_whenValidPinAndPassword() {
+    public void CheckUser_WhenValidPinAndPassword() {
         UserEntity user = UserEntity.builder()
                 .pin("7BSLC70")
                 .password(passwordEncoder.encode("123"))
@@ -89,7 +89,7 @@ public class UserRegisterServiceTest {
     }
 
     @Test
-    public void checkUser_whenPinNotNotRegistered() {
+    public void CheckUser_WhenPinNotNotRegistered() {
         UserEntity user = UserEntity.builder()
                 .pin("7BSLC70")
                 .password("123")
@@ -104,7 +104,7 @@ public class UserRegisterServiceTest {
     }
 
     @Test
-    public void checkUser_whenWrongPassword() {
+    public void CheckUser_WhenWrongPassword() {
         UserEntity user = UserEntity.builder()
                 .pin("7BSLC70")
                 .password(passwordEncoder.encode("1234"))

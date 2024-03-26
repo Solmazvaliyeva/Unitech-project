@@ -1,8 +1,10 @@
 package com.uni.project.dto;
 
+import lombok.Builder;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-
+@Builder
 public class CurrencyDto {
 
     private String from;
